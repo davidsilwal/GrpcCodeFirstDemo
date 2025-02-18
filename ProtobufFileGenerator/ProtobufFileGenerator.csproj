@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <PackageReference Include="Protobuf.Grpc.Reflection" Version="1.0.170" />
+      <PackageReference Include="System.ServiceModel.Primitives" Version="8.1.1" />
     </ItemGroup>
 
     <ItemGroup>

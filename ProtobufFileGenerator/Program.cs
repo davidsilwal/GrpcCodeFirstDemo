@@ -1,4 +1,5 @@
-﻿using ProtoBuf.Grpc.Configuration;
+﻿using System.ServiceModel;
+using ProtoBuf.Grpc.Configuration;
 using ProtoBuf.Grpc.Reflection;
 using Shared.ServiceContracts;
 
@@ -11,7 +12,7 @@ var assembly = typeof(IProductGrpcService).Assembly;
 // Filter types that are attributed with [Service]
 foreach (var type in assembly.GetTypes())
 {
-    if (type.IsInterface && type.GetCustomAttributes(typeof(ServiceAttribute), false).Length > 0)
+    if (type.IsInterface && type.GetCustomAttributes(typeof(ServiceContractAttribute), false).Length > 0)
     {
         Console.WriteLine($"Found gRPC service: {type.Name}");
 
