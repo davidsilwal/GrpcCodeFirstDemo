@@ -1,5 +1,4 @@
 ﻿using System.ServiceModel;
-using ProtoBuf.Grpc.Configuration;
 using ProtoBuf.Grpc.Reflection;
 using Shared.ServiceContracts;
 
