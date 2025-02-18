@@ -4,21 +4,21 @@ using Shared.ServiceContracts;
 
 namespace ProductService.GrpcServices;
 
-public class ProductGrpcService(ILogger<ProductGrpcService> logger) : IProductGrpcService
+public class ProductGrpcService(
+    ProductDataSource productDataSource,
+    ILogger<ProductGrpcService> logger) : IProductGrpcService
 {
-    private readonly List<Product> _products = [];
-
     public ValueTask<AddProductResponse> AddProductAsync(
         AddProductRequest request, CancellationToken cancellationToken = default)
     {
         var product = new Product
         {
-            Id = _products.Count + 1,
+            Id = productDataSource.Products.Count + 1,
             Name = request.Name,
             Price = request.Price
         };
 
-        _products.Add(product);
+        productDataSource.Products.Add(product);
 
         logger.LogInformation("Product added: {Product}", product.Name);
 
@@ -29,7 +29,7 @@ public class ProductGrpcService(ILogger<ProductGrpcService> logger) : IProductGr
     public ValueTask<GetProductResponse> GetProductAsync(GetProductRequest request,
         CancellationToken cancellationToken = default)
     {
-        var product = _products.Find(p => p.Id == request.Id);
+        var product = productDataSource.Products.Find(p => p.Id == request.Id);
 
         if (product == null)
         {
@@ -50,7 +50,8 @@ public class ProductGrpcService(ILogger<ProductGrpcService> logger) : IProductGr
         CancellationToken cancellationToken = default)
     {
         var response = new GetAllProductsResponse();
-        response.Products.AddRange(_products.Select(p => new GetProductResponse
+        response.Products = [];
+        response.Products.AddRange(productDataSource.Products.Select(p => new GetProductResponse
         {
             Id = p.Id,
             Name = p.Name,
