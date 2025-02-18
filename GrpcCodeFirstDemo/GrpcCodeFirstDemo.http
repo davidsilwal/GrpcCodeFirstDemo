@@ -1,0 +1,21 @@
+@GrpcCodeFirstDemo_HostAddress = https://localhost:7132
+
+
+### Get all products
+GET {{GrpcCodeFirstDemo_HostAddress}}/products/
+Accept: application/json
+
+### Create a product
+POST {{GrpcCodeFirstDemo_HostAddress}}/products/
+Content-Type: application/json
+
+{
+  "name": "Product 1",
+  "price": 100
+}
+
+### Get a product
+GET {{GrpcCodeFirstDemo_HostAddress}}/products/1
+Accept: application/json
+
+
