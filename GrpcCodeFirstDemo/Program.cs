@@ -20,7 +20,7 @@ builder.Services
 builder.Services.AddScoped(sp =>
 {
     var channel = sp.GetRequiredService<GrpcChannel>();
-    return channel.CreateGrpcService<IProductService>();
+    return channel.CreateGrpcService<IProductGrpcService>();
 });
 
 var app = builder.Build();
@@ -33,19 +33,19 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/products", async (IProductService productService) =>
+app.MapGet("/products", async (IProductGrpcService productService) =>
 {
     var response = await productService.GetAllProductsAsync(new GetAllProductsRequest());
     return Results.Ok(response.Products);
 });
 
-app.MapPost("/products", async (IProductService productService, AddProductRequest request) =>
+app.MapPost("/products", async (IProductGrpcService productService, AddProductRequest request) =>
 {
     var response = await productService.AddProductAsync(request);
     return Results.Ok(response);
 });
 
-app.MapGet("/products/{id}", async (IProductService productService, int id) =>
+app.MapGet("/products/{id}", async (IProductGrpcService productService, int id) =>
 {
     var response = await productService.GetProductAsync(new GetProductRequest { Id = id });
     return Results.Ok(response);

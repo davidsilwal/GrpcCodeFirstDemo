@@ -1,16 +1,15 @@
 using Grpc.Core;
-using ProtoBuf.Grpc;
 using Shared.DataContracts.Products;
 using Shared.ServiceContracts;
 
 namespace ProductService.GrpcServices;
 
-public class ProductService(ILogger<ProductService> logger) : IProductService
+public class ProductGrpcService(ILogger<ProductGrpcService> logger) : IProductGrpcService
 {
     private readonly List<Product> _products = [];
 
-    public ValueTask<AddProductResponse> AddProductAsync(AddProductRequest request, CallContext context = default,
-        CancellationToken cancellationToken = default)
+    public ValueTask<AddProductResponse> AddProductAsync(
+        AddProductRequest request, CancellationToken cancellationToken = default)
     {
         var product = new Product
         {
@@ -27,7 +26,7 @@ public class ProductService(ILogger<ProductService> logger) : IProductService
         return new ValueTask<AddProductResponse>(result);
     }
 
-    public ValueTask<GetProductResponse> GetProductAsync(GetProductRequest request, CallContext context = default,
+    public ValueTask<GetProductResponse> GetProductAsync(GetProductRequest request,
         CancellationToken cancellationToken = default)
     {
         var product = _products.Find(p => p.Id == request.Id);
@@ -48,7 +47,6 @@ public class ProductService(ILogger<ProductService> logger) : IProductService
     }
 
     public ValueTask<GetAllProductsResponse> GetAllProductsAsync(GetAllProductsRequest request,
-        CallContext context = default,
         CancellationToken cancellationToken = default)
     {
         var response = new GetAllProductsResponse();

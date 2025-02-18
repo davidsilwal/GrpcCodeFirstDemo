@@ -8,6 +8,6 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-app.MapGrpcService<ProductService.GrpcServices.ProductService>();
+app.MapGrpcService<ProductService.GrpcServices.ProductGrpcService>();
 
 app.Run();
