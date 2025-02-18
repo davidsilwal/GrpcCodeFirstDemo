@@ -1,5 +1,6 @@
 using Grpc.Core.Interceptors;
 using Grpc.Net.Client;
+using GrpcCodeFirstDemo;
 using ProtoBuf.Grpc.Client;
 using Shared.DataContracts.Products;
 using Shared.ServiceContracts;
@@ -11,9 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 builder.Services
-    .AddSingleton(_ =>
+    .AddSingleton(sp =>
     {
+        var logger = sp.GetRequiredService<ILogger<ClientLoggingInterceptor>>();
         var channel = GrpcChannel.ForAddress("https://localhost:7241");
+        channel.Intercept(new ClientLoggingInterceptor(logger));
         return channel;
     });
 
